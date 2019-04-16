@@ -233,8 +233,6 @@ ext {
 
     assetDir = findProperty('assetDir') ?: '../'
 
-    macJRE = fileTree(dir: assetDir, include: 'jre-*-macosx-x64.tar.gz')
-
     linuxJRE = fileTree(dir: assetDir, include: 'jre-*-linux-i586.tar.gz')
     linux64JRE = fileTree(dir: assetDir, include: 'jre-*-linux-x64.tar.gz')
 
@@ -364,15 +362,6 @@ distributions {
                 with main.contents
                 exclude '*.sh', '*.kaptn', 'OmegaT', 'OmegaT.bat'
             }
-            if (!macJRE.empty) {
-                from(tarTree(macJRE.singleFile)) {
-                    into 'OmegaT.app/Contents/PlugIns'
-                    includeEmptyDirs = false
-                    eachFile {
-                        replaceRelativePathSegment(it, /jre.*\.jre/, 'jre.bundle')
-                    }
-                }
-            }
         }
     }
 
@@ -468,9 +457,6 @@ task installMacSignedDist(type: Sync) {
 }
 
 macDistZip {
-    onlyIf {
-        condition(!macJRE.empty, 'JRE not found')
-    }
     archiveName = "${applicationName}_${version}${omtVersion.beta}_Mac.zip"
 }
 
@@ -831,6 +817,10 @@ task runtime(type: Exec) {
                     '--output', "$buildDir/runtime"]
         commandLine args
     }
+}
+
+distributions.mac.contents.from(runtime.outputs) {
+    into 'OmegaT.app/Contents/PlugIns/jre.bundle/Contents/Home'
 }
 
 task debug(type: JavaExec) {
