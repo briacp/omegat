@@ -35,6 +35,7 @@ import javax.swing.JComponent;
 import org.omegat.core.matching.NearString.SORT_KEY;
 import org.omegat.gui.matches.MatchesVarExpansion;
 import org.omegat.gui.preferences.BasePreferencesController;
+import org.omegat.util.OConsts;
 import org.omegat.util.OStrings;
 import org.omegat.util.Preferences;
 import org.omegat.util.gui.DelegatingComboBoxRenderer;
@@ -91,6 +92,8 @@ public class TMMatchesPreferencesController extends BasePreferencesController {
         panel.matchesTemplate.setText(Preferences.getPreferenceDefault(Preferences.EXT_TMX_MATCH_TEMPLATE,
                 MatchesVarExpansion.DEFAULT_TEMPLATE));
         panel.matchesTemplate.setCaretPosition(0);
+        panel.fuzzyMatchThreshold.setValue(Preferences.getPreferenceDefault(Preferences.EXT_TMX_FUZZY_MATCH_THRESHOLD,
+                OConsts.FUZZY_MATCH_THRESHOLD));
     }
 
     @Override
@@ -100,6 +103,7 @@ public class TMMatchesPreferencesController extends BasePreferencesController {
         panel.useSlash.setSelected(false);
         panel.matchesTemplate.setText(MatchesVarExpansion.DEFAULT_TEMPLATE);
         panel.matchesTemplate.setCaretPosition(0);
+        panel.fuzzyMatchThreshold.setValue(OConsts.FUZZY_MATCH_THRESHOLD);
     }
 
     @Override
@@ -108,5 +112,6 @@ public class TMMatchesPreferencesController extends BasePreferencesController {
         Preferences.setPreference(Preferences.EXT_TMX_SHOW_LEVEL2, panel.displayLevel2Tags.isSelected());
         Preferences.setPreference(Preferences.EXT_TMX_USE_SLASH, panel.useSlash.isSelected());
         Preferences.setPreference(Preferences.EXT_TMX_MATCH_TEMPLATE, panel.matchesTemplate.getText());
+        Preferences.setPreference(Preferences.EXT_TMX_FUZZY_MATCH_THRESHOLD, panel.fuzzyMatchThreshold.getValue());
     }
 }

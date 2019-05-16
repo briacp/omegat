@@ -57,6 +57,7 @@ import org.omegat.util.Language;
 import org.omegat.util.OConsts;
 import org.omegat.util.OStrings;
 import org.omegat.util.PatternConsts;
+import org.omegat.util.Preferences;
 import org.omegat.util.TMXProp;
 import org.omegat.util.Token;
 
@@ -125,6 +126,8 @@ public class FindMatches {
 
     // This finder used for search separate segment matches
     private FindMatches separateSegmentMatcher;
+    
+    private int fuzzyMatchThreshold = OConsts.FUZZY_MATCH_THRESHOLD;
 
     /**
      * @param searchExactlyTheSame
@@ -142,6 +145,8 @@ public class FindMatches {
         if (allowSeparateSegmentMatch && !project.getProjectProperties().isSentenceSegmentingEnabled()) {
             separateSegmentMatcher = new FindMatches(project, 1, false, true);
         }
+        this.fuzzyMatchThreshold = Preferences.getPreferenceDefault(Preferences.EXT_TMX_FUZZY_MATCH_THRESHOLD,
+                OConsts.FUZZY_MATCH_THRESHOLD);
     }
 
     public List<NearString> search(final String searchText, final boolean requiresTranslation,
@@ -377,7 +382,7 @@ public class FindMatches {
      * @return true if we have chance
      */
     protected boolean haveChanceToAdd(final int simStem, final int simNoStem, final int simExactly) {
-        if (simStem < OConsts.FUZZY_MATCH_THRESHOLD && simNoStem < OConsts.FUZZY_MATCH_THRESHOLD) {
+        if (simStem < fuzzyMatchThreshold && simNoStem < fuzzyMatchThreshold) {
             return false;
         }
         if (result.size() < maxCount) {
