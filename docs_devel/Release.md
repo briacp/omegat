@@ -53,10 +53,10 @@ After building, the distfiles will be deployed automatically to the [SourceForge
 This will publish all distfiles except for Signed Mac and WebStart.
 
 
-## 7. Build signed Mac distfile locally, publish
+## 7. Build notarized Mac distfile locally, publish
 
 ```sh
-./gradlew macSignedDistZip
+./gradlew macNotarizedDistZip
 ```
 
 Publish to SourceForge Files.
