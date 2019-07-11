@@ -236,7 +236,7 @@ ext {
 
     assetDir = findProperty('assetDir') ?: '../'
 
-    macJRE = fileTree(dir: assetDir, include: 'jre-*-macosx-x64.tar.gz')
+    macJRE = fileTree(dir: assetDir, include: 'OpenJDK8U-jre_x64_mac_hotspot_*.tar.gz')
 
     linuxJRE = fileTree(dir: assetDir, include: 'jre-*-linux-i586.tar.gz')
     linux64JRE = fileTree(dir: assetDir, include: 'jre-*-linux-x64.tar.gz')
@@ -369,7 +369,7 @@ distributions {
                     into 'OmegaT.app/Contents/PlugIns'
                     includeEmptyDirs = false
                     eachFile {
-                        replaceRelativePathSegment(it, /jre.*\.jre/, 'jre.bundle')
+                        replaceRelativePathSegment(it, /jdk.*-jre/, 'jre.bundle')
                     }
                 }
             }
